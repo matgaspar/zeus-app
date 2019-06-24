@@ -1,7 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import Routes from './routes';
+import global from './global';
 
-export default function App(){
-    return <Routes />;
+import Routes, { createRootNavigator, SignedOutRoutes, SignedInRoutes } from './routes';
+
+export default class App extends Component{
+    state = {
+        signed: false,
+        signLoaded: false,
+      };
+    
+      componentWillMount() {
+        global.isLogged()
+          .then(res => this.setState({ signed: res, signLoaded: true }))
+          .catch(err => alert("Erro"));
+      }
+    
+      render() {
+        const { signLoaded, signed } = this.state;
+    
+        if (!signLoaded) {
+          return null;
+        }
+        console.log(signLoaded);
+        console.log(signed);
+    
+        const Layout = createRootNavigator(signed);
+        return <Routes />;
+      }
 }
