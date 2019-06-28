@@ -15,7 +15,7 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "tcc_app";
     }
-    
+
     @Override
     protected ReactActivityDelegate createReactActivityDelegate() {
       return new ReactActivityDelegate(this, getMainComponentName()) {
@@ -24,5 +24,26 @@ public class MainActivity extends ReactActivity {
          return new RNGestureHandlerEnabledRootView(MainActivity.this);
         }
       };
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        hideNavigationBar();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            hideNavigationBar();
+        }
+    }
+
+    private void hideNavigationBar() {
+        getWindow().getDecorView().setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
     }
 }
