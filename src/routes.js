@@ -1,58 +1,42 @@
 import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
+import AuthLoadingScreen from './pages/authLoadingScreen';
 import Login from './pages/login';
 import Main from './pages/main';
 import Pessoas from './pages/pessoas';
+import PessoasTest from './pages/pessoasTest';
+import Pessoa from './pages/pessoa';
 import Veiculos from './pages/veiculos';
 import Rotas from './pages/rotas';
 
-import global from './global';
-
-
-export const SignedInRoutes = createStackNavigator({
+const SignedInScreens = createStackNavigator(
+  {
     Main,
     Pessoas,
+    PessoasTest,
+    Pessoa,
     Veiculos,
     Rotas,
-}, {
-        initialRouteName: 'Main',
-        defaultNavigationOptions: {
-            headerTitle: 'Controle de Transporte',
-            headerTintColor: '#FFF',
-            headerBackTitle: null,
-            headerStyle: {
-                backgroundColor: '#2A5EB2'
-            },
-        },
-        mode: 'modal',
-    });
-
-export const SignedOutRoutes = createStackNavigator({
-    Login,
-}, {
-        initialRouteName: 'Login',
-        defaultNavigationOptions: {
-            headerTitle: 'Zeus App',
-            headerTintColor: '#000',
-            headerBackTitle: null,
-        },
-        mode: 'modal',
-    });
-
-export const createRootNavigator = (signedIn = false) => {
-    return createSwitchNavigator({
-        SignedIn: { screen: SignedInRoutes },
-        SignedOut: { screen: SignedOutRoutes }
+  },
+  {
+    initialRouteName: 'Pessoas',
+    defaultNavigationOptions: {
+      headerTitle: 'ZEUS',
+      headerTintColor: '#FFF',
+      headerBackTitle: null,
+      headerStyle: {
+        backgroundColor: '#213257',
+      },
     },
-        {
-            initialRouteName: signedIn ? "SignedIn" : "SignedOut",
-            defaultNavigationOptions: {
-                headerTitle: 'Zeus App',
-                headerTintColor: '#000',
-                headerBackTitle: null,
-            },
-            mode: "modal",
-        });
-};
+    mode: 'modal',
+  },
+);
 
-export default createAppContainer(createRootNavigator());
+const SignedOutScreens = createSwitchNavigator({ Login }, { mode: 'modal' });
+
+export default createAppContainer(
+  createSwitchNavigator(
+    { AuthLoading: AuthLoadingScreen, SignedIn: SignedInScreens, SignedOut: SignedOutScreens },
+    { initialRouteName: 'AuthLoading' },
+  ),
+);
